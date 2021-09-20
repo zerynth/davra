@@ -19,6 +19,28 @@ from zdm import zdm
 from networking import wifi
 # the DHT11 driver
 from components.dht11 import dht11
+# and some control over the button
+import gpio
+
+
+# how fast we produce messages in milliseconds
+publish_frequency = 5000
+# DHT11 data pin
+dhtpin = D18
+# and how many time the button has bee pressed
+btnpress = 0
+
+def on_press(pin, value):
+    global publish_frequency, btnpress
+    if publish_frequency<=3000:
+        publish_frequency = 10000
+    else:
+        publish_frequency= publish_frequency-1000
+    print("Now publishing every",publish_frequency,"milliseconds")
+    btnpress = btnpress+1
+
+# configure button
+gpio.on_rise(D0, on_press, pull=INPUT_PULLUP)
 
 
 ##################################################
@@ -43,18 +65,29 @@ while True:
         # just start it
         agent.start()
 
+        hum = None
+        temp = None
+                
         while True:
             # use the agent to publish values to the ZDM
             # Just open the device page from VSCode and check that data is incoming
             try:
-                hum, temp = dht11.read(D18)
-                agent.publish({"hum":hum, "temp":temp}, "davra")
+                # DHT11 can fail reading 
+                hum, temp = dht11.read(dhtpin)
             except Exception as e:
                 print("DHT11 failed to read!",e)
 
-            sleep(5000)
+                
+
+            agent.publish({
+                "hum":hum, 
+                "temp":temp, 
+                "freq":publish_frequency,
+                "btn":btnpress}, "davra")
+            
+            sleep(publish_frequency)
             # The agent automatically handles connections and reconnections
-            print("Agent is online:  ",agent.online())
+            print("ZDM is online:    ",agent.online())
             # And provides info on the current firmware version
             print("Firmware version: ",agent.firmware())
             
