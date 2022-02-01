@@ -7,7 +7,7 @@ This job expects an int argument representing the new data publishing interval, 
 * Job name: **set_frequency**
 * Job payload: **{ "frequency": x}**
 
-Where **x** must be an integer between 1 and 300 (5 minutes) seconds. If you send the job with a invalid value, 
+Where **x** must be an integer between 1 and 300 (5 minutes) seconds. If you send the job with an invalid value, 
 the device will answer with an error message.
 
 You can send the job to the device using the Zerynth Cloud Web Interface (https://cloud.zerynth.com) or via HTTP request.
