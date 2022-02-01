@@ -8,14 +8,14 @@
                 "kind": "test",
                 "isDefault": true
             },
-            "command": "/home/giacomo/.zerynth3/dist/sys/python/bin/python3",
+            "command": "/home/enrico/.zerynth3/dist/sys/python/bin/python3",
             "args": [
                 "-I",
                 "-u",
-                "/home/giacomo/.zerynth3/dist/toolchain/ztc.py",
+                "/home/enrico/.zerynth3/dist/toolchain/ztc.py",
                 "device",
                 "console",
-                "/home/giacomo/git/zex/davra"
+                "/home/enrico/Desktop/Davra Firmware/FrequencyJob"
             ],
             "presentation": {
                 "echo": true,
