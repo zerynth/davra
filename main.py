@@ -1,6 +1,7 @@
 from bsp import board
-# import the zdm module
+# Let's import the zdm module
 from zdm import zdm
+# We also need wifi or ethernet
 from networking import wifi
 import gpio
 
@@ -8,48 +9,41 @@ board.init()
 board.summary()
 
 # Set the ssid and password of your wifi network
-ssid = "Wifi SSID"
-passwd = "Wifi Password"
+ssid = "WiFi SSID"
+passwd = "WiFi Password"
 
 #################################################
 LED_RED_PIN     = D22
 LED_GREEN_PIN   = D19
 LED_BLUE_PIN    = D21
 
-gpio.mode(LED_RED_PIN,OUTPUT)
-gpio.mode(LED_GREEN_PIN,OUTPUT)
-gpio.mode(LED_BLUE_PIN,OUTPUT)
-
-#change if leds doesn't work
-ON = 1
-OFF = 0
+rgb = gpio.LED(LED_RED_PIN, LED_GREEN_PIN, LED_BLUE_PIN, active=1)
 
 ###################################################
 def color(agent, args):
     print("Job request received!",args)
+
     if not "color" in args:
-        return {"msg": "Invalid argument for color job"}
+        return {"ERR": "Invalid argument for color job"}
 
     c = args["color"]
-    if c=="red":
-        gpio.set(LED_GREEN_PIN,OFF)
-        gpio.set(LED_BLUE_PIN,OFF)
-        gpio.set(LED_RED_PIN,ON)
-    elif c=="green":
-        gpio.set(LED_GREEN_PIN,ON)
-        gpio.set(LED_BLUE_PIN,OFF)
-        gpio.set(LED_RED_PIN,OFF)
-    elif c=="blue":
-        gpio.set(LED_GREEN_PIN,OFF)
-        gpio.set(LED_BLUE_PIN,ON)
-        gpio.set(LED_RED_PIN,OFF)
+    
+    if type(c) != PSTRING:
+        return {"ERR": "Type of parameters is wrong"}
     else:
-        gpio.set(LED_GREEN_PIN,OFF)
-        gpio.set(LED_BLUE_PIN,OFF)
-        gpio.set(LED_RED_PIN,OFF)
-        c="off"
+        if c=="red":
+            rgb.led(RED)
+        elif c=="green":
+            rgb.led(GREEN)
+        elif c=="blue":
+            rgb.led(BLUE)
+        elif c=="off":
+            rgb.led(BLACK)
+        else:
+            return {"ERR": "Can't set LED to %s" % c}
 
-    return {"msg": "LED set to %s" % c}
+        return {"msg": "LED set to %s" % c}
+        
 
 while True:
 
@@ -70,12 +64,14 @@ while True:
         agent.start()
 
         while True:
-
             # use the agent to publish values to the ZDM
             # Just open the device page from VSCode and check that data is incoming
             v = random(0,100)
-            agent.publish({"value":v}, "test")
-            print("Published",v)
+            try:
+                agent.publish({"value":v}, "test")
+                print("Published",v)
+            except:
+                print ("publish failed, discarding message")
             sleep(5000)
             # The agent automatically handles connections and reconnections
             print("ZDM is online:    ",agent.online())

@@ -8,14 +8,14 @@
                 "kind": "test",
                 "isDefault": true
             },
-            "command": "/home/enrico/.zerynth3/dist/sys/python/bin/python3",
+            "command": "C:/Users/Lorenzo/zerynth3/dist/sys/python/python.exe",
             "args": [
                 "-I",
                 "-u",
-                "/home/enrico/.zerynth3/dist/toolchain/ztc.py",
+                "C:/Users/Lorenzo/zerynth3/dist/toolchain/ztc.py",
                 "device",
                 "console",
-                "/home/enrico/Desktop/EVA_dimo"
+                "g:\\Il mio Drive\\Progetti interni\\EVA_dimo"
             ],
             "presentation": {
                 "echo": true,

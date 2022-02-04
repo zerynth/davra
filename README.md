@@ -1,13 +1,13 @@
 #  Demo firmware - Led job
 
 This firmware is a simple demo firmware that publishes a random value every 10 seconds.
-It handles 3 leds (red, green, blue); it is possible to change the led turned on sending a job to the device, called **color**.
-This job expects a string argument representing the color of the led to turn on.
+It handles a RGB led (red, green, blue); it is possible to change the led color sending a job to the device, called **color**.
+This job expects a string argument representing the color of the led.
 
 * Job name: **color**
 * Job payload: **{ "color": x}**
 
-Where **x** can be "green", "red" or "blue". If you send the job with another value, all the led will be turned off.
+Where **x** can be "green", "red" or "blue".
 
 You can send the job to the device using the Zerynth Cloud Web Interface (https://cloud.zerynth.com) or via HTTP request.
 
